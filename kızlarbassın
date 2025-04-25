@@ -1,1 +1,185 @@
-print("clan on top fr")
+-- Anime Menü GUI (Executor için optimize edildi)
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
+
+-- Eski GUI varsa sil
+if CoreGui:FindFirstChild("BrokenHeartGUI") then
+    CoreGui:FindFirstChild("BrokenHeartGUI"):Destroy()
+end
+
+local gui = Instance.new("ScreenGui", CoreGui)
+gui.Name = "BrokenHeartGUI"
+gui.ResetOnSpawn = false
+
+-- Ana Menü
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 400, 0, 300)
+frame.Position = UDim2.new(0.5, -200, 0.5, -150)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BackgroundTransparency = 0.1
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 10)
+
+-- Başlık
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 40)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "💘 Güzel Kızlar Bassın 💘"
+title.Font = Enum.Font.Fantasy
+title.TextSize = 26
+title.TextColor3 = Color3.fromRGB(255, 105, 180)
+
+-- Instagram
+local insta = Instance.new("TextLabel", frame)
+insta.Size = UDim2.new(1, 0, 0, 30)
+insta.Position = UDim2.new(0, 0, 1, -30)
+insta.BackgroundTransparency = 1
+insta.Text = "📷 Instagram: arthurlawrenc3"
+insta.Font = Enum.Font.SourceSansItalic
+insta.TextSize = 18
+insta.TextColor3 = Color3.fromRGB(200, 200, 255)
+
+-- - Butonu (küçültme)
+local minimizeBtn = Instance.new("TextButton", frame)
+minimizeBtn.Size = UDim2.new(0, 30, 0, 30)
+minimizeBtn.Position = UDim2.new(1, -70, 0, 5)
+minimizeBtn.Text = "-"
+minimizeBtn.Font = Enum.Font.SourceSansBold
+minimizeBtn.TextSize = 24
+minimizeBtn.BackgroundColor3 = Color3.fromRGB(180, 180, 255)
+minimizeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", minimizeBtn)
+
+-- Kalpli X Butonu
+local closeBtn = Instance.new("TextButton", frame)
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.Text = "💔"
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 20
+closeBtn.BackgroundColor3 = Color3.fromRGB(255, 128, 128)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", closeBtn)
+
+-- Tıkla ve Parla
+local clickBtn = Instance.new("TextButton", frame)
+clickBtn.Size = UDim2.new(0.8, 0, 0, 50)
+clickBtn.Position = UDim2.new(0.1, 0, 0.5, -25)
+clickBtn.Text = "✨ Tıkla ve Parla ✨"
+clickBtn.Font = Enum.Font.GothamBold
+clickBtn.TextSize = 20
+clickBtn.BackgroundColor3 = Color3.fromRGB(255, 182, 193)
+clickBtn.TextColor3 = Color3.fromRGB(50, 0, 50)
+Instance.new("UICorner", clickBtn)
+
+-- Mesajlar
+local messages = {
+    "Şaka yaptım güzel kız yok benim için...",
+    "Vardı biri...",
+    "Gitti, kırdı beni.",
+    "Kırılmak ne kelime...",
+    "Öldüm ben."
+}
+
+local msgLabel = Instance.new("TextLabel", frame)
+msgLabel.Size = UDim2.new(1, -20, 0, 120)
+msgLabel.Position = UDim2.new(0, 10, 1, -170)
+msgLabel.Text = ""
+msgLabel.TextWrapped = true
+msgLabel.Font = Enum.Font.FredokaOne
+msgLabel.TextSize = 22
+msgLabel.TextColor3 = Color3.fromRGB(255, 180, 250)
+msgLabel.BackgroundTransparency = 1
+
+clickBtn.MouseButton1Click:Connect(function()
+    clickBtn.Visible = false
+    for _, msg in ipairs(messages) do
+        msgLabel.Text = msg
+        wait(2.5)
+    end
+end)
+
+-- Popup Arkaplan
+local popupBG = Instance.new("Frame", gui)
+popupBG.Size = UDim2.new(0, 400, 0, 60)
+popupBG.Position = UDim2.new(0.5, -200, 0.4, 0)
+popupBG.BackgroundColor3 = Color3.fromRGB(255, 192, 203)
+popupBG.BackgroundTransparency = 1
+popupBG.Visible = false
+Instance.new("UICorner", popupBG)
+
+-- Popup Yazısı
+local popupText = Instance.new("TextLabel", popupBG)
+popupText.Size = UDim2.new(1, 0, 1, 0)
+popupText.Position = UDim2.new(0, 0, 0, 0)
+popupText.BackgroundTransparency = 1
+popupText.Text = ""
+popupText.TextColor3 = Color3.fromRGB(100, 0, 50)
+popupText.TextSize = 24
+popupText.Font = Enum.Font.Antique
+popupText.TextWrapped = true
+
+-- Kapatılınca çıkan
+local function showPopup(message)
+    popupBG.Visible = true
+    popupBG.BackgroundTransparency = 0.2
+    popupText.Text = message
+    popupText.TextTransparency = 0
+    wait(3)
+    popupText.TextTransparency = 1
+    popupBG.BackgroundTransparency = 1
+    popupBG.Visible = false
+end
+
+-- ❌ Kapat butonu
+closeBtn.MouseButton1Click:Connect(function()
+    TweenService:Create(frame, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+        Position = frame.Position - UDim2.new(1.2, 0, 0, 0)
+    }):Play()
+    wait(0.6)
+    showPopup("Hayallerimi de böyle kaydırdın...")
+end)
+
+-- Gizleme butonu (-)
+minimizeBtn.MouseButton1Click:Connect(function()
+    frame.Visible = false
+    showPopup("Menü gizlendi. Ama kalbim hâlâ açık...")
+end)
+
+-- CTRL ile geri getirme
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.LeftControl or input.KeyCode == Enum.KeyCode.RightControl then
+        if not frame.Visible then
+            local ask = Instance.new("TextButton", gui)
+            ask.Size = UDim2.new(0, 400, 0, 100)
+            ask.Position = UDim2.new(0.5, -200, 0.4, 70)
+            ask.BackgroundColor3 = Color3.fromRGB(255, 200, 230)
+            ask.TextColor3 = Color3.fromRGB(60, 0, 60)
+            ask.Font = Enum.Font.SpecialElite
+            ask.TextSize = 20
+            ask.TextWrapped = true
+            ask.Text = "Bu kalbi bir daha kırmayacaksan menüyü geri getiririm. Kabul ediyor musun? (E/H)"
+            Instance.new("UICorner", ask)
+
+            local connection
+            connection = UserInputService.InputBegan:Connect(function(key)
+                if key.KeyCode == Enum.KeyCode.E then
+                    frame.Visible = true
+                    ask:Destroy()
+                    connection:Disconnect()
+                elseif key.KeyCode == Enum.KeyCode.H then
+                    ask.Text = "Zaten hep böyle oldu... Ben inandım, sen gittin."
+                    wait(3)
+                    ask:Destroy()
+                    connection:Disconnect()
+                end
+            end)
+        end
+    end
+end)
