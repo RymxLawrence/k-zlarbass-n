@@ -1,4 +1,4 @@
--- Anime Menü GUI (Executor için optimize edildi)
+print("-- Anime Menü GUI (Executor için optimize edildi)
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
@@ -183,3 +183,4 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
         end
     end
 end)
+")
